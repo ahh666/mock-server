@@ -7,7 +7,7 @@
     "email": "ahh666@qq.com"
   },
   "scripts": {
-    "start": "hotnode ./index.js",
+    "start": "hotnode ./index.js"
   },
   "dependencies": {
     "hotnode": "^0.0.8",

@@ -7,8 +7,6 @@
     "email": "ahh666@qq.com"
   },
   "scripts": {
-    "start": "",
-    "server": "node ./server",
-    "web": "./web/dist/index.html"
+    "server": "node ./server"
   }
 }
