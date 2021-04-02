@@ -1,0 +1,21 @@
+{
+  "name": "mock-server-api",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Archer",
+    "email": "ahh666@qq.com"
+  },
+  "scripts": {
+    "start": "hotnode ./index.js",
+  },
+  "dependencies": {
+    "hotnode": "^0.0.8",
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^10.0.0",
+    "koa2-cors": "^2.0.6",
+    "mockjs": "^1.1.0",
+    "nedb-promise": "^2.0.1"
+  }
+}

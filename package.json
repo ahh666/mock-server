@@ -1,0 +1,14 @@
+{
+  "name": "mock-server",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Archer",
+    "email": "ahh666@qq.com"
+  },
+  "scripts": {
+    "start": "",
+    "server": "node ./server",
+    "web": "./web/dist/index.html"
+  }
+}

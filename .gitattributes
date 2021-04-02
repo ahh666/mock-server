@@ -1,2 +1,5 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+*.js eol=crlf
+*.json eol=crlf
+*.jsx eol=crlf
+*.ts eol=crlf
+*.vue eol=crlf
