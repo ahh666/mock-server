@@ -32,6 +32,9 @@
     <h3 class="title">返回参数设置</h3>
     <div class="response">
       <a-button class="margin-b-8" type="primary" @click="showImportJsonModal = true">导入json</a-button>
+      <a-button style="margin-left: 8px" @click="mockSample"
+        ><template #icon><QuestionCircleOutlined /></template>Mock示例</a-button
+      >
       <ResponseEditor :responseEditorData="interfaceResponse" />
     </div>
     <a-modal v-model:visible="showImportJsonModal" width="65%" title="导入json" @ok="importJson">
@@ -41,13 +44,14 @@
 </template>
 
 <script>
+import { QuestionCircleOutlined } from "@ant-design/icons-vue";
 import { requestMethods } from "@/utils/dictionary/interface";
 import RequestEditor from "@/components/interface/RequestEditor";
 import ResponseEditor from "@/components/interface/ResponseEditor";
 import interfaceInfoMixins from "@/mixins/interfaceInfo";
 export default {
   mixins: [interfaceInfoMixins],
-  components: { RequestEditor, ResponseEditor },
+  components: { RequestEditor, ResponseEditor, QuestionCircleOutlined },
   data() {
     return {
       requestMethods: requestMethods,
@@ -71,6 +75,9 @@ export default {
     },
   },
   methods: {
+    mockSample() {
+      window.open("http://mockjs.com/examples.html");
+    },
     importJson() {
       const json = JSON.parse(this.jsonString);
       const formatData = this.responseJsonFormat(json);
