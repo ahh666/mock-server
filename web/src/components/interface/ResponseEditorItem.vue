@@ -25,13 +25,13 @@
           show-search
           style="width: 120px; margin-left: 4px"
           placeholder="mock格式"
-          :disabled="mockDisabled || rootDisabled"
+          :disabled="mockDisabled"
         >
           <a-select-option v-for="item in mockSource" :key="item.mock" :value="item.mock">{{
             item.mock
           }}</a-select-option>
         </a-select>
-        <a-button class="mock-setting-btn">
+        <a-button class="mock-setting-btn" @click="openMockSetting" :disabled="mockDisabled">
           <template #icon>
             <SettingOutlined />
           </template>
@@ -42,15 +42,29 @@
     </div>
     <PlusOutlined style="color: #2395f1" class="editor-item-option-icon" @click="addHandler" />
     <CloseOutlined style="color: #ff561b" class="editor-item-option-icon" @click="delHandler" />
+    <!-- 自定义mock设置弹窗 -->
+    <a-modal v-model:visible="showCustomModal" width="65%" title="自定义mock设置" @ok="saveCustomMock">
+      <a-textarea v-model:value="customMock" :auto-size="{ minRows: 2 }" placeholder="自定义mock" />
+      <div class="custom-mock-btn">
+        <a-button @click="preview"
+          >预 览
+          <template #icon>
+            <SyncOutlined />
+          </template>
+        </a-button>
+      </div>
+      <div class="custom-mock-preview">{{ customMockPreview }}</div>
+    </a-modal>
   </div>
 </template>
 
 <script>
-import { PlusOutlined, CloseOutlined, DownOutlined, SettingOutlined } from "@ant-design/icons-vue";
+import Mock from "mockjs";
+import { PlusOutlined, CloseOutlined, DownOutlined, SettingOutlined, SyncOutlined } from "@ant-design/icons-vue";
 import { dataType } from "@/utils/dictionary/interface";
 import { MOCK_SOURCE } from "@/utils/dictionary/mockSource";
 export default {
-  components: { PlusOutlined, CloseOutlined, DownOutlined, SettingOutlined },
+  components: { PlusOutlined, CloseOutlined, DownOutlined, SettingOutlined, SyncOutlined },
   props: {
     fieldData: {
       type: Object,
@@ -62,17 +76,22 @@ export default {
       dataType,
       mockSource: MOCK_SOURCE,
       field: {},
+      showCustomModal: false,
+      // 自定义mock公式
+      customMock: "",
+      // 自定义mock预览字符
+      customMockPreview: "",
     };
   },
   computed: {
     showFoldBtn() {
       return this.field.type === "Object";
     },
-    mockDisabled() {
-      return ["Null", "Object", "Array"].includes(this.field.type);
-    },
     rootDisabled() {
       return this.field.name === "root";
+    },
+    mockDisabled() {
+      return ["Null", "Object", "Array"].includes(this.field.type) || this.rootDisabled;
     },
   },
   created() {
@@ -85,6 +104,23 @@ export default {
     delHandler() {
       this.$emit("delHandler");
     },
+    preview() {
+      this.customMockPreview = Mock.mock(this.customMock);
+    },
+    // 打开设置界面
+    openMockSetting() {
+      if (!this.customMock) {
+        const mock = this.field.mock;
+        this.customMock = mock;
+      }
+      this.showCustomModal = true;
+    },
+    // 保存自定义mock字段
+    saveCustomMock() {
+      this.field.customMock = this.customMock;
+      this.showCustomModal = false;
+    },
+    // 字段类型改变后的操作
     fieldTypeChange() {
       if (this.field.type === "Array") {
         return (this.field.items = [
@@ -138,15 +174,27 @@ export default {
   margin-left: 8px;
   display: none;
 }
-.mock-setting-btn {
+.mock-setting-btn:not(:disabled) {
   background: #efefef;
   color: #666;
+}
+.custom-mock-btn {
+  text-align: right;
+  margin: 10px 0;
+  button {
+    margin-left: 10px;
+  }
+}
+.custom-mock-preview {
+  width: 100%;
+  min-height: 60px;
+  background: #eee;
 }
 </style>
 <style lang="less">
 .response-editor-item {
-  .ant-btn:hover,
-  .ant-btn:focus {
+  .ant-btn:not(:disabled):hover,
+  .ant-btn:not(:disabled):focus {
     border-color: #eee;
   }
 }
