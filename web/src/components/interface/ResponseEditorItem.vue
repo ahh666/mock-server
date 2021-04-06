@@ -7,21 +7,38 @@
       v-model:value="field.name"
       class="editor-item-name"
       placeholder="字段名称"
-      :disabled="field.nameDisabled"
+      :disabled="field.nameDisabled || rootDisabled"
     ></a-input>
     <div class="editor-item-config">
-      <a-select v-model:value="field.type" style="width: 120px" placeholder="字段类型" @change="fieldTypeChange">
+      <a-select
+        v-model:value="field.type"
+        style="width: 120px"
+        placeholder="字段类型"
+        :disabled="rootDisabled"
+        @change="fieldTypeChange"
+      >
         <a-select-option v-for="item in dataType" :key="item" :value="item">{{ item }}</a-select-option>
       </a-select>
-      <a-select
-        v-model:value="field.mock"
-        style="width: 120px; margin-left: 4px"
-        placeholder="mock格式"
-        :disabled="mockDisabled"
-      >
-        <a-select-option v-for="item in mockFormat" :key="item" :value="item">{{ item }}</a-select-option>
-      </a-select>
-      <a-input v-model:value="field.note" placeholder="备注" class="note margin-lf-6"></a-input>
+      <a-radio-group>
+        <a-select
+          v-model:value="field.mock"
+          show-search
+          style="width: 120px; margin-left: 4px"
+          placeholder="mock格式"
+          :disabled="mockDisabled || rootDisabled"
+        >
+          <a-select-option v-for="item in mockSource" :key="item.mock" :value="item.mock">{{
+            item.mock
+          }}</a-select-option>
+        </a-select>
+        <a-button class="mock-setting-btn">
+          <template #icon>
+            <SettingOutlined />
+          </template>
+        </a-button>
+      </a-radio-group>
+      <a-input v-model:value="field.note" placeholder="备注" class="note margin-lf-6" :disabled="rootDisabled">
+      </a-input>
     </div>
     <PlusOutlined style="color: #2395f1" class="editor-item-option-icon" @click="addHandler" />
     <CloseOutlined style="color: #ff561b" class="editor-item-option-icon" @click="delHandler" />
@@ -29,10 +46,11 @@
 </template>
 
 <script>
-import { PlusOutlined, CloseOutlined, DownOutlined } from "@ant-design/icons-vue";
-import { dataType, mockFormat } from "@/utils/dictionary/interface";
+import { PlusOutlined, CloseOutlined, DownOutlined, SettingOutlined } from "@ant-design/icons-vue";
+import { dataType } from "@/utils/dictionary/interface";
+import { MOCK_SOURCE } from "@/utils/dictionary/mockSource";
 export default {
-  components: { PlusOutlined, CloseOutlined, DownOutlined },
+  components: { PlusOutlined, CloseOutlined, DownOutlined, SettingOutlined },
   props: {
     fieldData: {
       type: Object,
@@ -42,7 +60,7 @@ export default {
   data() {
     return {
       dataType,
-      mockFormat,
+      mockSource: MOCK_SOURCE,
       field: {},
     };
   },
@@ -51,7 +69,10 @@ export default {
       return this.field.type === "Object";
     },
     mockDisabled() {
-      return this.field.type === "Object" || this.field.type === "Array";
+      return ["Null", "Object", "Array"].includes(this.field.type);
+    },
+    rootDisabled() {
+      return this.field.name === "root";
     },
   },
   created() {
@@ -116,5 +137,17 @@ export default {
 .editor-item-option-icon {
   margin-left: 8px;
   display: none;
+}
+.mock-setting-btn {
+  background: #efefef;
+  color: #666;
+}
+</style>
+<style lang="less">
+.response-editor-item {
+  .ant-btn:hover,
+  .ant-btn:focus {
+    border-color: #eee;
+  }
 }
 </style>
