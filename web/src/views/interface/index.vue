@@ -1,8 +1,10 @@
 <template>
   <div>
     <a-tabs v-model:activeKey="activeKey" :animated="false">
-      <a-tab-pane key="1" tab="预览"><Preview /></a-tab-pane>
-      <a-tab-pane key="2" tab="编辑" force-render><Edit @getInterfaceList="getInterfaceList" /></a-tab-pane>
+      <a-tab-pane key="1" tab="预览"><Preview v-if="activeKey === '1'" /></a-tab-pane>
+      <a-tab-pane key="2" tab="编辑" force-render
+        ><Edit v-if="activeKey === '2'" @getInterfaceList="getInterfaceList"
+      /></a-tab-pane>
       <a-tab-pane key="3" tab="More" disabled></a-tab-pane>
     </a-tabs>
   </div>

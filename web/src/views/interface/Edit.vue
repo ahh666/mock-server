@@ -32,7 +32,8 @@
     <h3 class="title">返回参数设置</h3>
     <div class="response">
       <a-button class="margin-b-8" type="primary" @click="showImportJsonModal = true">导入json</a-button>
-      <a-button style="margin-left: 8px" @click="mockSample"
+      <a-button class="margin-b-8 margin-l-8" @click="showMockPreviewModal = true">预览返回数据</a-button>
+      <a-button class="margin-b-8 margin-l-8" @click="mockSample"
         ><template #icon><QuestionCircleOutlined /></template>Mock示例</a-button
       >
       <ResponseEditor :responseEditorData="interfaceResponse" />
@@ -40,6 +41,9 @@
     <a-modal v-model:visible="showImportJsonModal" width="65%" title="导入json" @ok="importJson">
       <a-textarea v-model:value="jsonString" :auto-size="{ minRows: 15 }" placeholder="输入json串" />
     </a-modal>
+
+    <!-- 预览返回数据的modal -->
+    <MockPreview v-if="showMockPreviewModal" v-model:showMockPreviewModal="showMockPreviewModal" />
   </div>
 </template>
 
@@ -49,9 +53,10 @@ import { requestMethods } from "@/utils/dictionary/interface";
 import RequestEditor from "@/components/interface/RequestEditor";
 import ResponseEditor from "@/components/interface/ResponseEditor";
 import interfaceInfoMixins from "@/mixins/interfaceInfo";
+import MockPreview from "@/components/MockPreview";
 export default {
   mixins: [interfaceInfoMixins],
-  components: { RequestEditor, ResponseEditor, QuestionCircleOutlined },
+  components: { RequestEditor, ResponseEditor, QuestionCircleOutlined, MockPreview },
   data() {
     return {
       requestMethods: requestMethods,
@@ -59,6 +64,7 @@ export default {
       interfaceRequest: [{}],
       interfaceResponse: [{}],
       showImportJsonModal: false,
+      showMockPreviewModal: false,
       jsonString: "",
     };
   },
@@ -189,5 +195,8 @@ export default {
 }
 .margin-b-8 {
   margin-bottom: 8px;
+}
+.margin-l-8 {
+  margin-left: 8px;
 }
 </style>
