@@ -32,7 +32,9 @@
     <h3 class="title">返回参数设置</h3>
     <div class="response">
       <a-button class="margin-b-8" type="primary" @click="showImportJsonModal = true">导入json</a-button>
-      <a-button class="margin-b-8 margin-l-8" @click="showMockPreviewModal = true">预览返回数据</a-button>
+      <a-button class="margin-b-8 margin-l-8" v-show="showPreviewBtn" @click="showMockPreviewModal = true"
+        >预览返回数据</a-button
+      >
       <a-button class="margin-b-8 margin-l-8" @click="mockSample"
         ><template #icon><QuestionCircleOutlined /></template>Mock示例</a-button
       >
@@ -62,11 +64,16 @@ export default {
       requestMethods: requestMethods,
       newInterfaceForm: {},
       interfaceRequest: [{}],
-      interfaceResponse: [{}],
+      interfaceResponse: [],
       showImportJsonModal: false,
       showMockPreviewModal: false,
       jsonString: "",
     };
+  },
+  computed: {
+    showPreviewBtn() {
+      return this.interfaceResponse && this.interfaceResponse.length > 0;
+    },
   },
   watch: {
     info: {

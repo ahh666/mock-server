@@ -41,7 +41,11 @@ export default {
       }
       let mock = {};
       data.forEach((item) => {
-        mock[item.name] = this.mockdataFormat(item);
+        let properties = item.name;
+        if (item.type === "Array" && item.minRange) {
+          properties = `${item.name}|${item.minRange}-${item.maxRange}`;
+        }
+        mock[properties] = this.mockdataFormat(item);
       });
       return mock;
     },

@@ -31,7 +31,7 @@
             item.mock
           }}</a-select-option>
         </a-select>
-        <a-button class="mock-setting-btn" @click="openMockSetting" :disabled="mockDisabled">
+        <a-button class="mock-setting-btn" @click="openMockSetting" :disabled="settingDisabled">
           <template #icon>
             <SettingOutlined />
           </template>
@@ -44,16 +44,23 @@
     <CloseOutlined style="color: #ff561b" class="editor-item-option-icon" @click="delHandler" />
     <!-- 自定义mock设置弹窗 -->
     <a-modal v-model:visible="showCustomModal" width="65%" title="自定义mock设置" @ok="saveCustomMock">
-      <a-textarea v-model:value="customMock" :auto-size="{ minRows: 2 }" placeholder="自定义mock" />
-      <div class="custom-mock-btn">
-        <a-button @click="preview"
-          >预 览
-          <template #icon>
-            <SyncOutlined />
-          </template>
-        </a-button>
+      <div class="custom-mock-modal" v-if="field.type === 'Array'">
+        数组长度：<a-input placeholder="min" v-model:value="minRange"></a-input> -
+        <a-input v-model:value="maxRange" placeholder="max"></a-input>
+        <p class="tip"><b>注：</b> 固定长度只需要填最小长度即可</p>
       </div>
-      <div class="custom-mock-preview">{{ customMockPreview }}</div>
+      <div v-else>
+        <a-textarea v-model:value="customMock" :auto-size="{ minRows: 2 }" placeholder="自定义mock" />
+        <div class="custom-mock-btn">
+          <a-button @click="preview"
+            >预 览
+            <template #icon>
+              <SyncOutlined />
+            </template>
+          </a-button>
+        </div>
+        <div class="custom-mock-preview">{{ customMockPreview }}</div>
+      </div>
     </a-modal>
   </div>
 </template>
@@ -81,6 +88,8 @@ export default {
       customMock: "",
       // 自定义mock预览字符
       customMockPreview: "",
+      minRange: "",
+      maxRange: "",
     };
   },
   computed: {
@@ -92,6 +101,9 @@ export default {
     },
     mockDisabled() {
       return ["Null", "Object", "Array"].includes(this.field.type) || this.rootDisabled;
+    },
+    settingDisabled() {
+      return ["Null", "Object"].includes(this.field.type);
     },
   },
   created() {
@@ -110,14 +122,21 @@ export default {
     // 打开设置界面
     openMockSetting() {
       if (!this.customMock) {
+        // 防止数据引用
         const mock = this.field.mock;
+        const minRange = this.field.minRange;
+        const maxRange = this.field.maxRange;
         this.customMock = mock;
+        this.minRange = minRange;
+        this.maxRange = maxRange;
       }
       this.showCustomModal = true;
     },
     // 保存自定义mock字段
     saveCustomMock() {
       this.field.customMock = this.customMock;
+      this.field.minRange = this.minRange;
+      this.field.maxRange = this.maxRange;
       this.showCustomModal = false;
     },
     // 字段类型改变后的操作
@@ -189,6 +208,17 @@ export default {
   width: 100%;
   min-height: 60px;
   background: #eee;
+}
+.custom-mock-modal {
+  .ant-input {
+    width: 120px;
+    margin: 0 8px 8px 8px;
+  }
+  .tip {
+    color: #999;
+    margin: 10px 0 -10px 0;
+    font-size: 0.9em;
+  }
 }
 </style>
 <style lang="less">
