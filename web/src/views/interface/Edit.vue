@@ -29,16 +29,27 @@
         @delQuery="delRequestItem(index)"
       />
     </div>
-    <h3 class="title">返回参数设置</h3>
+    <h3 class="title">
+      返回参数设置
+      <span class="title-options">
+        <a-tooltip class="title-options-icon">
+          <template #title>点击查看Mock示例</template>
+          <QuestionCircleOutlined @click="mockSample" />
+        </a-tooltip>
+        <a-switch checked-children="json" un-checked-children="mock" v-model:checked="useJson" />
+      </span>
+    </h3>
     <div class="response">
-      <a-button class="margin-b-8" type="primary" @click="showImportJsonModal = true">导入json</a-button>
-      <a-button class="margin-b-8 margin-l-8" v-show="showPreviewBtn" @click="showMockPreviewModal = true"
-        >预览返回数据</a-button
+      <a-button class="margin-b-8" v-show="useJson" type="primary" @click="showImportJsonModal = true"
+        >导入json</a-button
       >
-      <a-button class="margin-b-8 margin-l-8" @click="mockSample"
-        ><template #icon><QuestionCircleOutlined /></template>Mock示例</a-button
-      >
-      <ResponseEditor :responseEditorData="interfaceResponse" />
+      <span v-show="showPreviewBtn">
+        <a-button class="margin-b-8 margin-l-8" @click="showMockPreviewModal = true">预览返回数据</a-button>
+        <a-button class="margin-b-8 margin-l-8 copy-btn" @click="copyMockFormula">复制mock公式</a-button>
+      </span>
+
+      <ResponseEditor v-show="useJson" :responseEditorData="interfaceResponse" />
+      <ResponseMockEditor v-show="!useJson" />
     </div>
     <a-modal v-model:visible="showImportJsonModal" width="65%" title="导入json" @ok="importJson">
       <a-textarea v-model:value="jsonString" :auto-size="{ minRows: 15 }" placeholder="输入json串" />
@@ -54,11 +65,12 @@ import { QuestionCircleOutlined } from "@ant-design/icons-vue";
 import { requestMethods } from "@/utils/dictionary/interface";
 import RequestEditor from "@/components/interface/RequestEditor";
 import ResponseEditor from "@/components/interface/ResponseEditor";
+import ResponseMockEditor from "@/components/interface/ResponseMockEditor";
 import interfaceInfoMixins from "@/mixins/interfaceInfo";
 import MockPreview from "@/components/MockPreview";
 export default {
   mixins: [interfaceInfoMixins],
-  components: { RequestEditor, ResponseEditor, QuestionCircleOutlined, MockPreview },
+  components: { RequestEditor, ResponseEditor, ResponseMockEditor, QuestionCircleOutlined, MockPreview },
   data() {
     return {
       requestMethods: requestMethods,
@@ -68,11 +80,12 @@ export default {
       showImportJsonModal: false,
       showMockPreviewModal: false,
       jsonString: "",
+      useJson: true,
     };
   },
   computed: {
     showPreviewBtn() {
-      return this.interfaceResponse && this.interfaceResponse.length > 0;
+      return this.useJson && this.interfaceResponse && this.interfaceResponse.length > 0;
     },
   },
   watch: {
@@ -90,6 +103,10 @@ export default {
   methods: {
     mockSample() {
       window.open("http://mockjs.com/examples.html");
+    },
+    copyMockFormula() {
+      const mockdata = this.$utils.initPreviewData(this.$store.state.interfaceModule.interfaceData.resBody[0].items);
+      this.$utils.copyStringToClipboard(".copy-btn", JSON.stringify(mockdata, null, "\t"));
     },
     importJson() {
       const json = JSON.parse(this.jsonString);
@@ -163,6 +180,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.title-options {
+  display: inline-block;
+  .title-options-icon {
+    color: #999;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+}
 .interface-preview {
   padding: 10px 20px;
   h3 {
