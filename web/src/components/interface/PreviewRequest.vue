@@ -100,7 +100,7 @@ export default {
   },
   computed: {
     requestData() {
-      return this.info.request;
+      return this.info.reqBody;
     },
   },
   methods: {

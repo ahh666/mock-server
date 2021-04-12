@@ -36,9 +36,13 @@ export default {
   },
   methods: {
     getInterfaceList(params = {}) {
+      const interfaceData = {
+        reqBody: [],
+        resBody: [],
+      };
       this.$api.interfaceList(params).then((res) => {
         if (res.error_no === null) {
-          Object.assign(this.$store.state.interfaceModule.interfaceData, res.data[0]);
+          this.$store.state.interfaceModule.interfaceData = Object.assign(interfaceData, res.data[0]);
         }
       });
     },
