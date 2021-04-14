@@ -58,9 +58,6 @@ export default {
     };
   },
   methods: {
-    getInterfaceList() {
-      this.$emit("getInterfaceList");
-    },
     addInterface() {
       this.showCreateInterfaceModal = true;
     },

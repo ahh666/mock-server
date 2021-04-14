@@ -41,9 +41,7 @@ export default {
       },
     };
   },
-  created() {
-    console.log(6, this.showCreateModal);
-  },
+  inject: ["getInterfaceList"],
   methods: {
     closeCreateModal() {
       this.$emit("update:showCreateModal", !this.showCreateModal);

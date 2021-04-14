@@ -2,7 +2,7 @@
   <div class="project-home">
     <Menu :interfaceList="interfaceList" />
     <div class="main">
-      <Main v-show="showMain" :interfaceList="interfaceList" @getInterfaceList="getInterfaceList" />
+      <Main v-show="showMain" :interfaceList="interfaceList" />
       <div class="main-view"><router-view></router-view></div>
     </div>
   </div>
@@ -24,12 +24,17 @@ export default {
       return this.$route.path === "/project/" + this.$route.params.pid;
     },
   },
+  provide() {
+    return {
+      getInterfaceList: this.getInterfaceList,
+    };
+  },
   created() {
-    this.getInterfaceList({ pid: this.$route.params.pid });
+    this.getInterfaceList();
   },
   methods: {
-    getInterfaceList(params = {}) {
-      this.$api.interfaceList(params).then((res) => {
+    getInterfaceList() {
+      this.$api.interfaceList({ pid: this.$route.params.pid }).then((res) => {
         if (res.error_no === null) {
           this.interfaceList = res.data;
         }
