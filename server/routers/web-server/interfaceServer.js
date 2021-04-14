@@ -2,7 +2,7 @@
  * @Description: Description
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-23 19:00:47
- * @LastEditTime: 2021-04-14 14:58:08
+ * @LastEditTime: 2021-04-14 15:10:22
  * @LastEditors: 艾欢欢<ahh666@qq.com>
  * @FilePath: \server\routers\web-server\interfaceServer.js
  */
@@ -44,6 +44,8 @@ router.post('/createInterface',async ctx => {
   const basePath = projectDetail[0].path
   const path = doc.path
   doc.mockUrl = mockDomain + basePath + path
+
+  new RouterCreator(doc.reqMethod, basePath + path, '请先编辑返回数据')
 
   ctx.body = await interfaceServer.insert(doc).then(()=> {
     return responseHelper.success()
