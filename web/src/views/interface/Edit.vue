@@ -49,7 +49,7 @@
       </span>
 
       <ResponseEditor v-show="useJson" :responseEditorData="interfaceResponse" />
-      <ResponseMockEditor v-show="!useJson" />
+      <ResponseMockEditor v-show="!useJson" ref="responseMockEditor" />
     </div>
     <a-modal v-model:visible="showImportJsonModal" width="65%" title="导入json" @ok="importJson">
       <a-textarea v-model:value="jsonString" :auto-size="{ minRows: 15 }" placeholder="输入json串" />
@@ -105,8 +105,8 @@ export default {
       window.open("http://mockjs.com/examples.html");
     },
     copyMockFormula() {
-      const mockdata = this.$utils.initPreviewData(this.$store.state.interfaceModule.interfaceData.resBody[0].items);
-      this.$utils.copyStringToClipboard(".copy-btn", JSON.stringify(mockdata, null, "\t"));
+      const mockFormula = this.$utils.initPreviewData(this.$store.state.interfaceModule.interfaceData.resBody[0].items);
+      this.$utils.copyStringToClipboard(".copy-btn", JSON.stringify(mockFormula, null, "\t"));
     },
     importJson() {
       const json = JSON.parse(this.jsonString);
@@ -155,19 +155,22 @@ export default {
       return formatData;
     },
     saveInterface() {
-      console.log(this.$store.state.interfaceModule.interfaceData);
-      // const params = {
-      //   ...this.newInterfaceForm,
-      //   reqBody: this.interfaceRequest,
-      //   res: this.interfaceRequest,
-      //   // resPreview: // 待定
-      // };
-      // this.$api.updateInterface(params).then((res) => {
-      //   if (res.error_no === null) {
-      //     this.$emit("getInterfaceList");
-      //     this.$msg.success("保存成功");
-      //   }
-      // });
+      // 选择传入的 mock公式
+      const mockFormula = this.useJson
+        ? this.$utils.initPreviewData(this.$store.state.interfaceModule.interfaceData.resBody[0].items)
+        : JSON.parse(this.$refs.responseMockEditor.mockFormula);
+
+      const params = {
+        ...this.$store.state.interfaceModule.interfaceData,
+        mockFormula,
+      };
+      console.log(params);
+      this.$api.updateInterface(params).then((res) => {
+        if (res.error_no === null) {
+          this.$emit("getInterfaceList");
+          this.$msg.success("保存成功");
+        }
+      });
     },
     addRequestQuery() {
       this.interfaceRequest.push({});

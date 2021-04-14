@@ -2,9 +2,9 @@
  * @Description: Description
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-23 19:00:47
- * @LastEditTime: 2021-03-25 13:22:55
+ * @LastEditTime: 2021-04-14 14:58:08
  * @LastEditors: 艾欢欢<ahh666@qq.com>
- * @FilePath: \mock-server\server\routers\web-server\interfaceServer.js
+ * @FilePath: \server\routers\web-server\interfaceServer.js
  */
 const router = require('koa-router')()
 const DbHelper = require('../../utils/dbHelper')
@@ -12,6 +12,8 @@ const responseHelper = require('../../utils/responseHelper')
 const mockDomain = require('../../config')
 const interfaceServer = new DbHelper('interfaceServer')
 const projectServer = new DbHelper('projectServer')
+const RouterCreator = require('../../utils/routerCreator')
+const { mock } = require('mockjs')
 
 /**
  * @description: 获取接口列表
@@ -78,15 +80,17 @@ router.post('/updateInterface',async ctx => {
     ctx.body = responseHelper.fail(10001, '请传入参数')
     return
   }
-
+  // console.log(doc);
   const iid = doc._id
   // 获取完整mock地址
   const projectDetail = await projectServer.find({_id: doc.pid})
   const basePath = projectDetail[0].path
   const path = doc.path
   doc.mockUrl = mockDomain + basePath + path
-  
+  // nedb中 _id 不允许修改
   delete doc._id
+
+  new RouterCreator(doc.reqMethod, basePath + path, doc.mockFormula)
 
   ctx.body = await interfaceServer.update({_id: iid},doc).then(()=> {
     return responseHelper.success()

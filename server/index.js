@@ -2,9 +2,9 @@
  * @Description: 服务入口
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-18 15:07:36
- * @LastEditTime: 2021-03-23 19:12:34
+ * @LastEditTime: 2021-04-14 13:44:43
  * @LastEditors: 艾欢欢<ahh666@qq.com>
- * @FilePath: \mock-server\server\index.js
+ * @FilePath: \server\index.js
  */
 
 const Koa = require('koa')
@@ -12,6 +12,8 @@ const cors = require('koa2-cors')
 const router = require('koa-router')()
 const app = new Koa()
 const bodyParser = require('koa-bodyparser')
+
+module.exports = app
 
 app.use(cors())
 app.use(bodyParser())
