@@ -1,17 +1,28 @@
 <template>
   <div class="menu-box">
     <a-menu mode="inline" v-model:selectedKeys="selectedKeys" @select="selectMenu">
-      <a-menu-item key="all" class="all">全部接口</a-menu-item>
+      <a-menu-item key="all" class="all"
+        >全部接口
+        <a-tooltip>
+          <template #title>添加接口</template>
+          <PlusSquareOutlined style="margin-left: 120px" @click="addInterface" />
+        </a-tooltip>
+      </a-menu-item>
       <div class="none" v-if="interfaceList.length < 1">无数据</div>
       <a-menu-item v-for="item in interfaceList" :key="item._id">
         <span>{{ item.name }}</span>
       </a-menu-item>
     </a-menu>
+    <!-- 添加接口弹窗 -->
+    <CreateInterfaceModal v-if="showCreateInterfaceModal" v-model:showCreateModal="showCreateInterfaceModal" />
   </div>
 </template>
 
 <script>
+import { PlusSquareOutlined } from "@ant-design/icons-vue";
+import CreateInterfaceModal from "@/components/project/CreateInterfaceModal";
 export default {
+  components: { PlusSquareOutlined, CreateInterfaceModal },
   props: {
     interfaceList: {
       type: Array,
@@ -20,6 +31,7 @@ export default {
   },
   data() {
     return {
+      showCreateInterfaceModal: false,
       selectedKeys: [""],
     };
   },
@@ -37,6 +49,9 @@ export default {
     },
     goProjectHome() {
       this.$router.push(`/project/${this.$route.params.pid}`);
+    },
+    addInterface() {
+      this.showCreateInterfaceModal = true;
     },
   },
 };

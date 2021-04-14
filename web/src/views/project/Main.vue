@@ -15,36 +15,17 @@
         </template>
       </a-table>
       <!-- 添加接口弹窗 -->
-      <a-modal v-model:visible="showCreateModal" title="添加接口">
-        <template #footer>
-          <a-button key="back" @click="closeCreateModal">取消</a-button>
-          <a-button key="submit" type="primary" :loading="loading" @click="createInterface">确定</a-button>
-        </template>
-        <a-form ref="newInterfaceForm" :model="newInterfaceForm" :labelCol="{ span: 6 }" :wrapperCol="{ span: 18 }">
-          <a-form-item label="接口名称" required name="name">
-            <a-input v-model:value="newInterfaceForm.name" placeholder="项目名称"></a-input>
-          </a-form-item>
-          <a-form-item label="接口路径" required name="path">
-            <a-input v-model:value="newInterfaceForm.path" placeholder="/path">
-              <template #addonBefore>
-                <a-select v-model:value="newInterfaceForm.reqMethod">
-                  <a-select-option value="get">get</a-select-option>
-                  <a-select-option value="post">post</a-select-option>
-                </a-select>
-              </template>
-            </a-input>
-          </a-form-item>
-          <a-form-item label="注">
-            <p>后续可进入详情页进行编辑</p>
-          </a-form-item>
-        </a-form>
-      </a-modal>
+      <CreateInterfaceModal v-if="showCreateInterfaceModal" v-model:showCreateModal="showCreateInterfaceModal" />
     </div>
   </div>
 </template>
 
 <script>
+import CreateInterfaceModal from "@/components/project/CreateInterfaceModal";
 export default {
+  components: {
+    CreateInterfaceModal,
+  },
   props: {
     interfaceList: {
       type: Array,
@@ -53,11 +34,7 @@ export default {
   },
   data() {
     return {
-      loading: false,
-      showCreateModal: false,
-      newInterfaceForm: {
-        reqMethod: "get",
-      },
+      showCreateInterfaceModal: false,
       columns: [
         {
           title: "接口名称",
@@ -85,34 +62,7 @@ export default {
       this.$emit("getInterfaceList");
     },
     addInterface() {
-      this.openCreateModal();
-    },
-    openCreateModal() {
-      this.showCreateModal = true;
-    },
-    closeCreateModal() {
-      this.showCreateModal = false;
-    },
-    createInterface() {
-      this.$refs.newInterfaceForm
-        .validate()
-        .then(() => {
-          this.loading = true;
-          const params = {
-            ...this.newInterfaceForm,
-            pid: this.$route.params.pid,
-          };
-          this.$api.createInterface(params).then((res) => {
-            if (res.error_no === null) {
-              this.getInterfaceList();
-              this.closeCreateModal();
-            }
-            this.loading = false;
-          });
-        })
-        .catch((err) => {
-          console.log("error", err);
-        });
+      this.showCreateInterfaceModal = true;
     },
   },
 };
