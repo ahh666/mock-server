@@ -1,6 +1,6 @@
 <template>
   <div class="home-top">
-    Mock Server
+    <span @click="goHome" class="logo cursor-pointer">Mock Server</span>
     <a-menu class="home-menu" mode="horizontal" v-model:selectedKeys="selectedKeys" @select="selectMenu">
       <a-menu-item key="/home">
         <AppstoreOutlined />
@@ -40,6 +40,9 @@ export default defineComponent({
     selectMenu({ key }) {
       this.$router.push(key);
     },
+    goHome() {
+      this.$router.push("/home");
+    },
   },
 });
 </script>
@@ -59,6 +62,9 @@ export default defineComponent({
 .home-menu {
   height: 51px;
   margin-left: 100px;
+}
+.logo:hover {
+  color: steelblue;
 }
 </style>
 <style>
