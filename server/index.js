@@ -2,7 +2,7 @@
  * @Description: 服务入口
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-18 15:07:36
- * @LastEditTime: 2021-04-14 13:44:43
+ * @LastEditTime: 2021-04-15 14:53:52
  * @LastEditors: 艾欢欢<ahh666@qq.com>
  * @FilePath: \server\index.js
  */
@@ -18,7 +18,12 @@ module.exports = app
 app.use(cors())
 app.use(bodyParser())
 
-router.use('/webServer', require('./routers/web-server/projectServer'), require('./routers/web-server/interfaceServer'))
+router.use(
+  '/webServer',
+  require('./routers/web-server/projectServer'),
+  require('./routers/web-server/interfaceServer'),
+  require('./routers/web-server/webServer')
+)
 
 app.use(router.routes()).use(router.allowedMethods())
 

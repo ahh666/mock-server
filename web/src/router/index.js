@@ -2,7 +2,7 @@
  * @Description: Description
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-18 19:38:38
- * @LastEditTime: 2021-03-24 15:37:37
+ * @LastEditTime: 2021-04-15 13:54:07
  * @LastEditors: 艾欢欢<ahh666@qq.com>
  * @FilePath: \web\src\router\index.js
  */
@@ -32,6 +32,10 @@ const routes = [
   {
     path: "/setting",
     component: () => import("../views/Setting.vue"),
+  },
+  {
+    path: "/about",
+    component: () => import("../views/About.vue"),
   },
 ];
 

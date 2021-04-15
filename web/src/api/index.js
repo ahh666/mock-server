@@ -2,7 +2,7 @@
  * @Description: Description
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-18 20:02:02
- * @LastEditTime: 2021-03-26 10:19:53
+ * @LastEditTime: 2021-04-15 14:56:01
  * @LastEditors: 艾欢欢<ahh666@qq.com>
  * @FilePath: \web\src\api\index.js
  */
@@ -32,6 +32,9 @@ class Api {
   }
   updateInterface(data) {
     return this.handler.post("/webServer/updateInterface", data);
+  }
+  about() {
+    return this.handler.get("/webServer/about");
   }
 }
 
