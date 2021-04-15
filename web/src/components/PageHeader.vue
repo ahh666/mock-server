@@ -33,8 +33,13 @@ export default defineComponent({
       selectedKeys: ["/home"],
     };
   },
-  created() {
-    this.selectedKeys[0] = this.$route.path;
+  watch: {
+    "$route.path": {
+      handler(val) {
+        this.selectedKeys[0] = val;
+      },
+      immediate: true,
+    },
   },
   methods: {
     selectMenu({ key }) {
