@@ -2,11 +2,12 @@
  * @Description: Description
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-23 19:08:15
- * @LastEditTime: 2021-03-24 17:29:25
+ * @LastEditTime: 2021-04-16 15:19:19
  * @LastEditors: 艾欢欢<ahh666@qq.com>
- * @FilePath: \mock-server\server\routers\web-server\projectServer.js
+ * @FilePath: \server\routers\web-server\projectServer.js
  */
 const router = require('koa-router')()
+const { lastIndexOf } = require('../../config')
 const DbHelper = require('../../utils/dbHelper')
 const responseHelper = require('../../utils/responseHelper')
 const projectServer = new DbHelper('projectServer')
@@ -61,6 +62,28 @@ router.post('/delProject', async ctx => {
     .remove({ _id })
     .then(res => {
       return responseHelper.success(undefined, res)
+    })
+    .catch(err => {
+      return responseHelper.fail(10002, err)
+    })
+})
+
+/**
+ * @description: 修改项目基本信息
+ * @param {object} 入参 {id,name,path,desc?}
+ * @return {*}
+ */
+router.post('/updateProject', async ctx => {
+  let doc = ctx.request.body
+  if (Object.keys(doc).length < 1) {
+    ctx.body = responseHelper.fail(10001, '请传入参数')
+    return
+  }
+  console.log(doc);
+  ctx.body = await projectServer
+    .update({ _id: doc.id }, doc)
+    .then(() => {
+      return responseHelper.success()
     })
     .catch(err => {
       return responseHelper.fail(10002, err)

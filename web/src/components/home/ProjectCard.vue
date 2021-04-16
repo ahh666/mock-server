@@ -2,13 +2,13 @@
   <div>
     <a-card class="card-style">
       <template #title>
-        <span class="title cursor-pointer" @click="handleEdit">{{ cardInfo.name }}</span>
+        <span class="title cursor-pointer" @click="handleClickTitle">{{ cardInfo.name }}</span>
       </template>
       <template #extra>
-        <EditOutlined class="option-icon-style" title="编辑" />
+        <EditOutlined class="option-icon-style" title="编辑" @click="handleEdit" />
         <DeleteOutlined class="option-icon-style" title="删除" @click="handleDel" />
       </template>
-      {{ cardInfo.name }}
+      {{ cardInfo.desc }}
     </a-card>
   </div>
 </template>
@@ -24,6 +24,9 @@ export default defineComponent({
     },
   },
   methods: {
+    handleClickTitle() {
+      this.$emit("handleClickTitle");
+    },
     handleEdit() {
       this.$emit("handleEdit");
     },

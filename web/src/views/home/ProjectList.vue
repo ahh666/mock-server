@@ -1,22 +1,23 @@
 <template>
   <div class="project-list">
     <ProjectCard
-      v-for="item in cardList"
+      v-for="(item, index) in cardList"
       :key="item._id"
       :cardInfo="item"
       class="card"
-      @handleEdit="editProject(item._id)"
+      @handleClickTitle="toProjectDetail(item._id)"
+      @handleEdit="editProject(index)"
       @handleDel="delProject(item._id)"
     />
-    <a-card class="create card" @click="openCreateModal">
+    <a-card class="create card" @click="addProject">
       <PlusOutlined />
       新建项目
     </a-card>
     <!-- 新建项目弹窗 -->
-    <a-modal v-model:visible="showCreateModal" title="新建项目" width="80%">
+    <a-modal v-model:visible="showCreateModal" :title="createModalTitle" width="80%">
       <template #footer>
         <a-button key="back" @click="closeCreateModal">取消</a-button>
-        <a-button key="submit" type="primary" :loading="loading" @click="createProject">确定</a-button>
+        <a-button key="submit" type="primary" @click="modalConfirmHanlder">确定</a-button>
       </template>
       <a-form ref="newProjectForm" :model="newProjectForm" :labelCol="{ span: 6 }" :wrapperCol="{ span: 18 }">
         <a-form-item label="项目名称" required name="name">
@@ -40,10 +41,15 @@ export default {
   data() {
     return {
       showCreateModal: false,
-      loading: false,
       cardList: [],
       newProjectForm: {},
+      isAdd: true,
     };
+  },
+  computed: {
+    createModalTitle() {
+      return this.isAdd ? "新建项目" : "编辑项目";
+    },
   },
   components: {
     ProjectCard,
@@ -53,8 +59,40 @@ export default {
     this.getProjectList();
   },
   methods: {
-    editProject(id) {
+    toProjectDetail(id) {
       this.$router.push({ path: `/project/${id}` });
+    },
+    addProject() {
+      this.isAdd = true;
+      this.newProjectForm = {};
+      this.openCreateModal();
+    },
+    editProject(index) {
+      this.isAdd = false;
+      this.newProjectForm = JSON.parse(JSON.stringify(this.cardList[index]));
+      this.openCreateModal();
+    },
+    updateProject(id) {
+      const params = {
+        ...this.newProjectForm,
+        id,
+      };
+      this.$api.updateProject(params).then((res) => {
+        if (res.error_no === null) {
+          this.getProjectList();
+          this.closeCreateModal();
+        }
+      });
+    },
+    modalConfirmHanlder() {
+      this.$refs.newProjectForm
+        .validate()
+        .then(() => {
+          this.isAdd ? this.createProject() : this.updateProject(this.newProjectForm._id);
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
     },
     delProject(id) {
       this.$api.delProject({ id }).then((res) => {
@@ -75,21 +113,12 @@ export default {
       this.showCreateModal = false;
     },
     createProject() {
-      this.$refs.newProjectForm
-        .validate()
-        .then(() => {
-          this.loading = true;
-          this.$api.createProject(this.newProjectForm).then((res) => {
-            if (res.error_no === null) {
-              this.getProjectList();
-              this.closeCreateModal();
-            }
-            this.loading = false;
-          });
-        })
-        .catch((err) => {
-          console.log("error", err);
-        });
+      this.$api.createProject(this.newProjectForm).then((res) => {
+        if (res.error_no === null) {
+          this.getProjectList();
+          this.closeCreateModal();
+        }
+      });
     },
   },
 };

@@ -2,7 +2,7 @@
  * @Description: Description
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-18 20:02:02
- * @LastEditTime: 2021-04-15 14:56:01
+ * @LastEditTime: 2021-04-16 14:54:43
  * @LastEditors: 艾欢欢<ahh666@qq.com>
  * @FilePath: \web\src\api\index.js
  */
@@ -19,6 +19,9 @@ class Api {
   }
   delProject(data) {
     return this.handler.post("/webServer/delProject", data);
+  }
+  updateProject(data) {
+    return this.handler.post("/webServer/updateProject", data);
   }
 
   interfaceList(params) {
