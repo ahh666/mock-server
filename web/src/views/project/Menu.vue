@@ -67,7 +67,7 @@ export default {
         if (res.error_no === null) {
           this.$msg.success("删除成功！");
           this.getInterfaceList();
-          this.selectedKeys[0] = "all";
+          this.goProjectHome();
         }
       });
     },
