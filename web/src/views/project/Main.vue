@@ -13,6 +13,11 @@
             {{ text }}
           </span>
         </template>
+        <template #options="{ record }">
+          <a-popconfirm v-if="interfaceList.length" title="Sure to delete?" @confirm="delInterface(record._id)">
+            <a>Delete</a>
+          </a-popconfirm>
+        </template>
       </a-table>
       <!-- 添加接口弹窗 -->
       <CreateInterfaceModal v-if="showCreateInterfaceModal" v-model:showCreateModal="showCreateInterfaceModal" />
@@ -51,15 +56,26 @@ export default {
         },
         {
           title: "操作",
-          dataIndex: "reqMethod",
-          key: "reqMethod",
+          dataIndex: "options",
+          key: "options",
+          slots: { customRender: "options" },
         },
       ],
     };
   },
+  inject: ["getInterfaceList"],
   methods: {
     addInterface() {
       this.showCreateInterfaceModal = true;
+    },
+    delInterface(id) {
+      console.log(id);
+      this.$api.delInterface({ id }).then((res) => {
+        if (res.error_no === null) {
+          this.$msg.success("删除成功！");
+          this.getInterfaceList();
+        }
+      });
     },
   },
 };
