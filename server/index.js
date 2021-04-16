@@ -2,7 +2,7 @@
  * @Description: 服务入口
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-18 15:07:36
- * @LastEditTime: 2021-04-16 14:25:27
+ * @LastEditTime: 2021-04-16 15:29:49
  * @LastEditors: 艾欢欢<ahh666@qq.com>
  * @FilePath: \server\index.js
  */
@@ -37,16 +37,16 @@ app.use(bodyParser())
 
 router.use(
   '/webServer',
-  require('./routers/web-server/projectServer'),
-  require('./routers/web-server/interfaceServer'),
-  require('./routers/web-server/webServer')
+  require('./routers/projectServer'),
+  require('./routers/interfaceServer'),
+  require('./routers/webServer')
 )
 
 app.use(router.routes()).use(router.allowedMethods())
 
 app.listen(serverPort, () => {
   console.log(
-    `> 接口服务已启动：http:127.0.0.1:${serverPort}，
-> 可视化控制台请访问：http:127.0.0.1:${webPort}`
+    `-> 接口服务已启动：http:127.0.0.1:${serverPort}，
+-> 可视化控制台请访问：http:127.0.0.1:${webPort}`
   )
 })

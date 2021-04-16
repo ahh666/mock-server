@@ -2,14 +2,13 @@
  * @Description: Description
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-23 19:08:15
- * @LastEditTime: 2021-04-16 15:19:19
+ * @LastEditTime: 2021-04-16 15:31:51
  * @LastEditors: 艾欢欢<ahh666@qq.com>
- * @FilePath: \server\routers\web-server\projectServer.js
+ * @FilePath: \server\routers\projectServer.js
  */
 const router = require('koa-router')()
-const { lastIndexOf } = require('../../config')
-const DbHelper = require('../../utils/dbHelper')
-const responseHelper = require('../../utils/responseHelper')
+const DbHelper = require('../utils/dbHelper')
+const responseHelper = require('../utils/responseHelper')
 const projectServer = new DbHelper('projectServer')
 
 /**
@@ -79,7 +78,7 @@ router.post('/updateProject', async ctx => {
     ctx.body = responseHelper.fail(10001, '请传入参数')
     return
   }
-  console.log(doc);
+
   ctx.body = await projectServer
     .update({ _id: doc.id }, doc)
     .then(() => {

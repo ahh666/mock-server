@@ -2,18 +2,17 @@
  * @Description: Description
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-23 19:00:47
- * @LastEditTime: 2021-04-14 15:10:22
+ * @LastEditTime: 2021-04-16 15:31:10
  * @LastEditors: 艾欢欢<ahh666@qq.com>
- * @FilePath: \server\routers\web-server\interfaceServer.js
+ * @FilePath: \server\routers\interfaceServer.js
  */
 const router = require('koa-router')()
-const DbHelper = require('../../utils/dbHelper')
-const responseHelper = require('../../utils/responseHelper')
-const mockDomain = require('../../config')
+const DbHelper = require('../utils/dbHelper')
+const responseHelper = require('../utils/responseHelper')
+const mockDomain = require('../config')
 const interfaceServer = new DbHelper('interfaceServer')
 const projectServer = new DbHelper('projectServer')
-const RouterCreator = require('../../utils/routerCreator')
-const { mock } = require('mockjs')
+const RouterCreator = require('../utils/routerCreator')
 
 /**
  * @description: 获取接口列表
@@ -82,7 +81,7 @@ router.post('/updateInterface',async ctx => {
     ctx.body = responseHelper.fail(10001, '请传入参数')
     return
   }
-  // console.log(doc);
+
   const iid = doc._id
   // 获取完整mock地址
   const projectDetail = await projectServer.find({_id: doc.pid})
