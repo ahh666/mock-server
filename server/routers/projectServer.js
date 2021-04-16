@@ -2,14 +2,13 @@
  * @Description: Description
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-23 19:08:15
- * @LastEditTime: 2021-04-16 15:31:51
+ * @LastEditTime: 2021-04-16 17:41:18
  * @LastEditors: 艾欢欢<ahh666@qq.com>
  * @FilePath: \server\routers\projectServer.js
  */
 const router = require('koa-router')()
-const DbHelper = require('../utils/dbHelper')
 const responseHelper = require('../utils/responseHelper')
-const projectServer = new DbHelper('projectServer')
+const projectServer = require('../database/controller/projectServer')
 
 /**
  * @description: 获取项目列表

@@ -2,7 +2,7 @@
  * @Description: Description
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-19 13:52:23
- * @LastEditTime: 2021-04-16 15:30:58
+ * @LastEditTime: 2021-04-16 17:22:27
  * @LastEditors: 艾欢欢<ahh666@qq.com>
  * @FilePath: \server\database\index.js
  */
@@ -14,6 +14,7 @@ const userDirectory = join(process.env[process.platform === 'win32' ? 'USERPROFI
 // db 的基本操作
 class DbOptions {
   createDatabase(dir, name, option) {
+    console.log(dir, name, option);
     let opt = { filename: join(dir, name), autoload: true }
     Object.assign(opt, option)
     return new Datastore(opt)

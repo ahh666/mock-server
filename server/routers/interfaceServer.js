@@ -2,16 +2,15 @@
  * @Description: Description
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-23 19:00:47
- * @LastEditTime: 2021-04-16 15:31:10
+ * @LastEditTime: 2021-04-16 18:06:52
  * @LastEditors: 艾欢欢<ahh666@qq.com>
  * @FilePath: \server\routers\interfaceServer.js
  */
 const router = require('koa-router')()
-const DbHelper = require('../utils/dbHelper')
 const responseHelper = require('../utils/responseHelper')
 const mockDomain = require('../config')
-const interfaceServer = new DbHelper('interfaceServer')
-const projectServer = new DbHelper('projectServer')
+const interfaceServer = require('../database/controller/interfaceServer')
+const projectServer = require('../database/controller/projectServer')
 const RouterCreator = require('../utils/routerCreator')
 
 /**
