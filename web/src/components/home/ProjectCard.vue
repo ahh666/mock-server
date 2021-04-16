@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <a-card class="card-style">
+  <div @click="handleClickCard">
+    <a-card :title="cardInfo.name" class="card-style">
       <template #title>
-        <span class="title cursor-pointer" @click="handleClickTitle">{{ cardInfo.name }}</span>
+        <span class="title cursor-pointer" @click="handleClickCard">{{ cardInfo.name }}</span>
       </template>
       <template #extra>
-        <EditOutlined class="option-icon-style" title="编辑" @click="handleEdit" />
-        <DeleteOutlined class="option-icon-style" title="删除" @click="handleDel" />
+        <EditOutlined class="option-icon-style" title="编辑" @click.stop="handleEdit" />
+        <DeleteOutlined class="option-icon-style" title="删除" @click.stop="handleDel" />
       </template>
       {{ cardInfo.desc }}
     </a-card>
@@ -24,8 +24,8 @@ export default defineComponent({
     },
   },
   methods: {
-    handleClickTitle() {
-      this.$emit("handleClickTitle");
+    handleClickCard() {
+      this.$emit("handleClickCard");
     },
     handleEdit() {
       this.$emit("handleEdit");
@@ -54,8 +54,5 @@ export default defineComponent({
   &:hover {
     color: #1890ff;
   }
-}
-.title:hover {
-  color: #1890ff;
 }
 </style>

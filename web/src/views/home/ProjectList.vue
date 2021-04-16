@@ -5,7 +5,7 @@
       :key="item._id"
       :cardInfo="item"
       class="card"
-      @handleClickTitle="toProjectDetail(item._id)"
+      @handleClickCard="toProjectDetail(item._id)"
       @handleEdit="editProject(index)"
       @handleDel="delProject(item._id)"
     />
