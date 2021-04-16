@@ -167,7 +167,7 @@ export default {
       console.log(params);
       this.$api.updateInterface(params).then((res) => {
         if (res.error_no === null) {
-          this.$emit("getInterfaceList");
+          this.$emit("getInterfaceList", { _id: this.$route.params.iid });
           this.$msg.success("保存成功");
         }
       });
