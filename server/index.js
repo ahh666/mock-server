@@ -2,7 +2,7 @@
  * @Description: 服务入口
  * @Author: 艾欢欢<ahh666@qq.com>
  * @Date: 2021-03-18 15:07:36
- * @LastEditTime: 2021-04-16 10:58:35
+ * @LastEditTime: 2021-04-16 14:25:27
  * @LastEditors: 艾欢欢<ahh666@qq.com>
  * @FilePath: \server\index.js
  */
@@ -17,7 +17,7 @@ const fs = require('fs')
 const join = require('path').join
 const web = new Koa()
 
-const webPort = 8001
+const webPort = 8002
 const serverPort = 8088
 
 // 用于 web 生产环境部署
