@@ -7,13 +7,15 @@
     "email": "ahh666@qq.com"
   },
   "scripts": {
-    "start": "hotnode ./index.js"
+    "start": "set NODE_ENV=production&& node index.js",
+    "dev": "set NODE_ENV=development&& hotnode index.js"
   },
   "dependencies": {
     "hotnode": "^0.0.8",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^10.0.0",
+    "koa-static": "^5.0.0",
     "koa2-cors": "^2.0.6",
     "mockjs": "^1.1.0",
     "nedb-promise": "^2.0.1"
