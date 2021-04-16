@@ -1,8 +1,11 @@
 <template>
   <div>
-    <a-card :title="cardInfo.name" class="card-style">
+    <a-card class="card-style">
+      <template #title>
+        <span class="title cursor-pointer" @click="handleEdit">{{ cardInfo.name }}</span>
+      </template>
       <template #extra>
-        <EditOutlined class="option-icon-style" title="编辑" @click="handleEdit" />
+        <EditOutlined class="option-icon-style" title="编辑" />
         <DeleteOutlined class="option-icon-style" title="删除" @click="handleDel" />
       </template>
       {{ cardInfo.name }}
@@ -44,6 +47,12 @@ export default defineComponent({
   cursor: pointer;
   color: #999898;
   font-size: 16px;
-  margin-left: 10px;
+  margin-left: 12px;
+  &:hover {
+    color: #1890ff;
+  }
+}
+.title:hover {
+  color: #1890ff;
 }
 </style>
