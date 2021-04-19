@@ -7,17 +7,19 @@
     <PreviewRequest />
 
     <h3 class="title">返回参数</h3>
-    <div class="response"></div>
+    <PreviewResponse />
   </div>
 </template>
 
 <script>
 import PreviewBase from "@/components/interface/PreviewBase";
 import PreviewRequest from "@/components/interface/PreviewRequest";
+import PreviewResponse from "@/components/interface/PreviewResponse";
 export default {
   components: {
     PreviewBase,
     PreviewRequest,
+    PreviewResponse,
   },
 };
 </script>
