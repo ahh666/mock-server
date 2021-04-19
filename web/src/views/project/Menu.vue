@@ -1,24 +1,28 @@
 <template>
   <div class="menu-box">
     <a-menu mode="inline" v-model:selectedKeys="selectedKeys" @select="selectMenu">
-      <a-menu-item key="all" class="all has-options-btn"
-        >全部接口
-        <span>
-          <a-tooltip>
-            <template #title>添加接口</template>
-            <PlusSquareOutlined @click="addInterface" />
-          </a-tooltip>
-        </span>
+      <a-menu-item key="all" class="all">
+        <div class="has-options-btn">
+          <span>全部接口</span>
+          <span>
+            <a-tooltip>
+              <template #title>添加接口</template>
+              <PlusSquareOutlined @click="addInterface" />
+            </a-tooltip>
+          </span>
+        </div>
       </a-menu-item>
       <div class="none" v-if="interfaceList.length < 1">无数据</div>
-      <a-menu-item v-for="item in interfaceList" :key="item._id" class="has-options-btn">
-        <span>{{ item.name }}</span>
-        <span class="del-btn">
-          <a-tooltip>
-            <template #title>删除此接口</template>
-            <MinusSquareOutlined @click.stop="delInterface(item._id)" />
-          </a-tooltip>
-        </span>
+      <a-menu-item v-for="item in interfaceList" :key="item._id">
+        <div class="has-options-btn">
+          <span>{{ item.name }}</span>
+          <span class="del-btn">
+            <a-tooltip>
+              <template #title>删除此接口</template>
+              <MinusSquareOutlined @click.stop="delInterface(item._id)" />
+            </a-tooltip>
+          </span>
+        </div>
       </a-menu-item>
     </a-menu>
     <!-- 添加接口弹窗 -->

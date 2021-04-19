@@ -38,6 +38,7 @@ export default defineComponent({
 </script>
 <style lang="less" scoped>
 .card-style {
+  cursor: pointer;
   border: 2px solid #fff;
   width: 300px;
   height: 200px;
