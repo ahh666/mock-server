@@ -44,9 +44,13 @@ export default {
     };
   },
   inject: ["getInterfaceList"],
-  mounted() {
-    const iid = this.$route.params.iid;
-    this.selectedKeys[0] = iid || "all";
+  watch: {
+    "$route.params.iid": {
+      handler(val) {
+        this.selectedKeys[0] = val || "all";
+      },
+      immediate: true,
+    },
   },
   methods: {
     selectMenu({ key }) {

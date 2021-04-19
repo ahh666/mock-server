@@ -7,6 +7,11 @@
     <div class="content">
       <!-- 表格 -->
       <a-table :dataSource="interfaceList" :columns="columns" rowKey="_id">
+        <template #name="{ record, text }">
+          <a @click="$router.push(`/project/${$route.params.pid}/interface/${record._id}`)">
+            {{ text }}
+          </a>
+        </template>
         <template #path="{ record, text }">
           <span>
             <a-tag :color="$utils.tagColor(record.reqMethod)">{{ record.reqMethod }}</a-tag>
@@ -45,6 +50,7 @@ export default {
           title: "接口名称",
           dataIndex: "name",
           key: "name",
+          slots: { customRender: "name" },
         },
         {
           title: "接口路径",
