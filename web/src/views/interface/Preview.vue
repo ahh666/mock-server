@@ -1,7 +1,7 @@
 <template>
   <div class="interface-preview">
     <h3 class="title">基本信息</h3>
-    <PreviewBase />
+    <PreviewBase class="base" />
 
     <h3 class="title">请求参数</h3>
     <PreviewRequest />
@@ -29,16 +29,12 @@ export default {
     padding-left: 6px;
     margin-bottom: 20px;
     border-left: 3px solid #2395f1;
+    & ~ h3 {
+      margin-top: 25px;
+    }
   }
   .base {
     padding: 0 20px;
-    margin-bottom: 40px;
-    p {
-      line-height: 30px;
-    }
-    strong {
-      margin-right: 20px;
-    }
   }
 }
 </style>

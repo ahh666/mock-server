@@ -25,4 +25,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="less" scoped>
+p {
+  line-height: 30px;
+}
+strong {
+  margin-right: 20px;
+}
+</style>
